@@ -1,0 +1,169 @@
+﻿
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Language" content="fa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Kendo UI: Implemeting the grif</title>
+
+    <link href="styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <!--شيوه نامه‌ي مخصوص راست به چپ سازي-->
+    <link href="styles/kendo.rtl.min.css" rel="stylesheet" />
+    <link href="styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/kendo.all.min.js" type="text/javascript"></script>
+
+    <!--محل سفارشي سازي پيام‌ها و مسايل بومي-->
+    <script src="js/cultures/kendo.culture.fa-IR.js" type="text/javascript"></script>
+    <script src="js/cultures/kendo.culture.fa.js" type="text/javascript"></script>
+    <script src="js/messages/kendo.messages.en-US.js" type="text/javascript"></script>
+
+    <!--https://github.com/moment/moment/-->
+    <script src="js/cultures/moment.min.js" type="text/javascript"></script>
+    <!--https://github.com/jalaali/moment-jalaali-->
+    <script src="js/cultures/moment-jalaali.js" type="text/javascript"></script>
+
+    <!--https://github.com/loudenvier/kendo-global/blob/master/lang/kendo.fa-IR.js-->
+    <script src="js/messages/kendo.fa-IR.js" type="text/javascript"></script>
+
+
+    <style type="text/css">
+        body {
+            font-family: tahoma;
+            font-size: 9pt;
+        }
+    </style>
+
+    <script type="text/javascript">
+        // جهت استفاده از فايل: kendo.culture.fa-IR.js
+        kendo.culture("fa-IR");
+    </script>
+</head>
+<body>
+    <!--نحوه‌ي راست به چپ سازي گريد-->
+    <div class="k-rtl">
+        <div id="report-grid"></div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var productsDataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "api/products",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'GET'
+                    },
+                    parameterMap: function (options) {
+                        return kendo.stringify(options);
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    model: {
+                        fields: {
+                            "Id": { type: "number" }, //تعيين نوع فيلد براي جستجوي پويا مهم است
+                            "Name": { type: "string" },
+                            "IsAvailable": { type: "boolean" },
+                            "Price": { type: "number" },
+                            "AddDate": { type: "date" }
+                        }
+                    },
+                    //groups: "Data"
+                },
+                error: function (e) {
+                    alert(e.errorThrown);
+                },
+                pageSize: 10,
+                sort: { field: "Id", dir: "desc" },
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true,
+                group: { field: "IsAvailable" },
+                //serverGrouping: true,
+                aggregate: [
+                    { field: "Name", aggregate: "count" },
+                    { field: "Price", aggregate: "sum" }
+                ]
+            });
+
+            $("#report-grid").kendoGrid({
+                dataSource: productsDataSource,
+                autoBind: true,
+                scrollable: false,
+                pageable: {
+                    previousNext: true, // default true
+                    numeric: true, // default true
+                    buttonCount: 5, // default 10
+                    refresh: true, // default false
+                    input: true, // default false
+                    pageSizes: true // default false
+                },
+                sortable: true,
+                filterable: true,
+                reorderable: true,
+                columnMenu: true,
+                groupable: true, // allows the user to alter what field the grid is grouped by
+                columns: [
+                    { field: "Id", title: "شماره", width: "130px" },
+                    {
+                        field: "Name", title: "نام محصول",
+                        footerTemplate: "تعداد: #=count#"
+                    },
+                    {
+                        field: "AddDate", title: "تاريخ ثبت",
+                        //format: "{0:yyyy/MM/dd}",
+                        //filterable: { ui: "datepicker" }
+                        template: "#=moment(AddDate).format('jYYYY/jMM/jDD')#"
+                    },
+                    {
+                        field: "IsAvailable", title: "موجود است",
+                        template: '<input type="checkbox" #= IsAvailable ? checked="checked" : "" # disabled="disabled" ></input>'
+                    },
+                    {
+                        field: "Price", title: "قيمت",
+                        //format: "{0:c0}",
+                        template: kendo.template($("#priceTemplate").html()),
+                        footerTemplate: "جمع: #=kendo.toString(sum,'c0')#"
+                    }
+                ],
+                toolbar: [
+                    { template: kendo.template($("#toolbarTemplate").html()) }
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        // اين اطلاعات براي تهيه خروجي سمت سرور مناسب هستند
+        function getCurrentGridFilters() {
+            var dataSource = $("#report-grid").data("kendoGrid").dataSource;
+            var gridState = {
+                page: dataSource.page(),
+                pageSize: dataSource.pageSize(),
+                sort: dataSource.sort(),
+                group: dataSource.group(),
+                filter: dataSource.filter()
+            };
+            return kendo.stringify(gridState);
+        }
+    </script>
+
+    <script id="toolbarTemplate" type="text/x-kendo-template">
+        <a class="k-button" href="\#" onclick="alert('gridState: ' + getCurrentGridFilters());">نوار ابزار سفارشي</a>
+    </script>
+
+    <script type="text/x-kendo-template" id="priceTemplate">
+        #if( Price > 2490 ) {#
+        <span style="background:brown; color:yellow;">#=kendo.toString(Price,'c0')#</span>
+        #} else {#
+        #= kendo.toString(Price,'c0')#
+        #}#
+    </script>
+
+</body>
+</html>

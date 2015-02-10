@@ -1,0 +1,283 @@
+﻿
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Language" content="fa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Kendo UI: Implemeting MVVM</title>
+
+    <link href="styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <!--شيوه نامه‌ي مخصوص راست به چپ سازي-->
+    <link href="styles/kendo.rtl.min.css" rel="stylesheet" />
+    <link href="styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/kendo.all.min.js" type="text/javascript"></script>
+
+    <!--محل سفارشي سازي پيام‌ها و مسايل بومي-->
+    <script src="js/cultures/kendo.culture.fa-IR.js" type="text/javascript"></script>
+    <script src="js/cultures/kendo.culture.fa.js" type="text/javascript"></script>
+    <script src="js/messages/kendo.messages.en-US.js" type="text/javascript"></script>
+
+    <!--https://github.com/moment/moment/-->
+    <script src="js/cultures/moment.min.js" type="text/javascript"></script>
+    <!--https://github.com/jalaali/moment-jalaali-->
+    <script src="js/cultures/moment-jalaali.js" type="text/javascript"></script>
+
+    <!--https://github.com/loudenvier/kendo-global/blob/master/lang/kendo.fa-IR.js-->
+    <script src="js/messages/kendo.fa-IR.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="styles/site.css" />
+
+    <script type="text/javascript">
+        // جهت استفاده از فايل: kendo.culture.fa-IR.js
+        kendo.culture("fa-IR");
+    </script>
+</head>
+<body>
+
+    <div id="coursesSection" class="k-rtl k-header">
+        <div class="box-col">
+            <form id="myForm" data-role="validator" novalidate="novalidate">
+                <h3>ثبت نام</h3>
+                <ul>
+                    <li>
+                        <label for="Id">Id</label>
+                        <span id="Id" data-bind="text:course.Id"></span>
+                    </li>
+                    <li>
+                        <label for="UserName">نام</label>
+                        <input type="text" id="UserName" name="UserName" class="k-textbox"
+                               data-bind="value:course.UserName"
+                               required />
+                    </li>
+                    <li>
+                        <label for="CourseName">دوره</label>
+                        <input type="text" dir="ltr" id="CourseName" name="CourseName" required
+                               data-bind="value:course.CourseName" />
+                        <span class="k-invalid-msg" data-for="CourseName"></span>
+                    </li>
+                    <li>
+                        <label for="Credit">مبلغ پرداختي</label>
+                        <input id="Credit" name="Credit" type="number" min="1000" max="6000"
+                               required data-max-msg="عددي بين 1000 و 6000" dir="ltr"
+                               data-bind="value:course.Credit"
+                               class="k-textbox k-input" />
+                        <span class="k-invalid-msg" data-for="Credit"></span>
+                    </li>
+                    <li>
+                        <label for="Email">پست الكترونيك</label>
+                        <input type="email" id="Email" dir="ltr" name="Email"
+                               data-bind="value:course.Email"
+                               required class="k-textbox" />
+                    </li>
+                    <li>
+                        <label for="Tel">تلفن</label>
+                        <input type="tel" id="Tel" name="Tel" dir="ltr" pattern="\d{8}"
+                               required class="k-textbox"
+                               data-bind="value:course.Tel"
+                               data-pattern-msg="8 رقم" />
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Accept"
+                               data-bind="checked:accepted"
+                               required />
+                        شرايط دوره را قبول دارم.
+                        <span class="k-invalid-msg" data-for="Accept"></span>
+                    </li>
+                    <li>
+                        <button class="k-button"
+                                data-bind="enabled: accepted, click: doSave"
+                                type="submit">
+                            ارسال
+                        </button>
+                        <button class="k-button" data-bind="click: resetModel">از نو</button>
+                    </li>
+                </ul>
+                <span id="doneMsg"></span>
+            </form>
+        </div>
+        <div id="results">
+            <table class="metrotable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>نام</th>
+                        <th>دوره</th>
+                        <th>هزينه</th>
+                        <th>ايميل</th>
+                        <th>تلفن</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody data-template="row-template" data-bind="source: coursesDataSourceRows"></tbody>
+                <tfoot data-template="footer-template" data-bind="source: this"></tfoot>
+            </table>
+            <script id="row-template" type="text/x-kendo-template">
+                <tr>
+                    <td data-bind="text: Id"></td>
+                    <td data-bind="text: UserName"></td>
+                    <td dir="ltr" data-bind="text: CourseName"></td>
+                    <td>
+                        #: kendo.toString(get("Credit"), "c0") #
+                    </td>
+                    <td data-bind="text: Email"></td>
+                    <td data-bind="text: Tel"></td>
+                    <td><button class="k-button" data-bind="click: deleteCourse">حذف</button></td>
+                    <td><button class="k-button" data-bind="click: editCourse">ويرايش</button></td>
+                </tr>
+            </script>
+            <script id="footer-template" type="text/x-kendo-template">
+                <tr>
+                    <td colspan="3"></td>
+                    <td>
+                        جمع كل: #: kendo.toString(totalPrice(), "c0") #
+                    </td>
+                    <td colspan="2"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </script>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#CourseName").kendoComboBox({
+                dataSource: [
+                       "Intro to C++",
+                       "C Programming",
+                       "HTML5 in Action",
+                       "Computer Science I",
+                       "Computer Science II",
+                       "Kendo UI",
+                       "CSS3",
+                       "Programming I",
+                       "Programming II",
+                       "JavaScript"
+                ]
+            });
+
+            $("#coursesSection").kendoValidator({
+                rules: {
+                    customRule1: function (input) {
+                        if (!input.is("[id=UserName]"))
+                            return true;
+
+                        var re = /^[A-Za-z-ا-ي]+$/;
+                        return re.test(input.val());
+                    }
+                },
+                messages: {
+                    // {0} would be replaced with the input element's name
+                    required: '{0} را تكميل كنيد.',
+                    email: 'ايميل وارد شده معتبر نيست.',
+                    customRule1: 'اعداد مجاز نيستند.'
+                }
+            });
+
+            var model = kendo.data.Model.define({
+                id: "Id",
+                fields: {
+                    Id: { type: 'number' }, // leave this set to 0 or undefined, so Kendo knows it is new.
+                    UserName: { type: 'string' },
+                    CourseName: { type: 'string' },
+                    Credit: { type: 'number' },
+                    Email: { type: 'string' },
+                    Tel: { type: 'string' }
+                }
+            });
+
+            var dataSource = new kendo.data.DataSource({
+                type: 'json',
+                transport: {
+                    read: {
+                        url: "api/registrations",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'GET'
+                    },
+                    create: {
+                        url: "api/registrations",
+                        contentType: 'application/json; charset=utf-8',
+                        type: "POST"
+                    },
+                    update: {
+                        url: function (course) {
+                            return "api/registrations/" + course.Id;
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        type: "PUT"
+                    },
+                    destroy: {
+                        url: function (course) {
+                            return "api/registrations/" + course.Id;
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        type: "DELETE"
+                    },
+                    parameterMap: function (data, type) {
+                        // Convert to a JSON string.  Without this step your content will be form encoded.
+                        return JSON.stringify(data);
+                    }
+                },
+                schema: {
+                    model: model
+                },
+                error: function (e) {
+                    alert(e.errorThrown);
+                },
+                change: function (e) {
+                    // فراخواني در زمان دريافت اطلاعات از سرور و يا تغييرات محلي
+                    viewModel.set("coursesDataSourceRows", new kendo.data.ObservableArray(this.view()));
+                }
+            });
+
+            var viewModel = kendo.observable({
+                accepted: false,
+                course: new model(),
+                coursesDataSourceRows: new kendo.data.ObservableArray([]),
+                doSave: function (e) {
+                    e.preventDefault();
+                    console.log("this", this.course);
+                    var validator = $("#coursesSection").data("kendoValidator");
+                    if (validator.validate()) {
+                        if (this.course.Id == 0) {
+                            dataSource.add(this.course);
+                        }
+                        dataSource.sync(); // push to the server
+                        this.set("course", new model()); // reset controls
+                    }
+                },
+                resetModel: function (e) {
+                    e.preventDefault();
+                    this.set("course", new model());
+                },
+                totalPrice: function () {
+                    var sum = 0;
+                    $.each(this.get("coursesDataSourceRows"), function (index, item) {
+                        sum += item.Credit;
+                    });
+                    return sum;
+                },
+                deleteCourse: function (e) {
+                    // the current data item is passed as the "data" field of the event argument
+                    var course = e.data;
+                    dataSource.remove(course);
+                    dataSource.sync(); // push to the server
+                },
+                editCourse: function(e) {
+                    // the current data item is passed as the "data" field of the event argument
+                    var course = e.data;
+                    this.set("course", course);
+                }
+            });
+
+            kendo.bind($("#coursesSection"), viewModel);
+            dataSource.read(); // دريافت ليست موجود از سرور در آغاز كار
+        });
+    </script>
+</body>
+</html>

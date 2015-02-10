@@ -1,0 +1,169 @@
+﻿@model Mvc4TestViewModel.Models.OrderDetailViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<style type="text/css">
+div.k-dropzone {
+    border: 1px solid #c5c5c5; /* For Default; Different for each theme */
+}
+
+div.k-dropzone em {
+    visibility: visible;
+}
+</style>
+
+@using (Ajax.BeginForm(actionName: "Index", controllerName: "Home",
+                       ajaxOptions: new AjaxOptions(),
+                       htmlAttributes: new { id = "Form1", name = "Form1" }, routeValues: new { }
+                       ))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>OrderDetail</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Origin)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Origin, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.Origin)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NetWeight)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.NetWeight, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.NetWeight)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ValueDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ValueDate)
+            @Html.ValidationMessageFor(model => model.ValueDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Destination)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Destination, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.Destination)
+        </div>
+
+        <div class="k-rtl k-header">
+            <input name="files" id="files" type="file" accept="image/*" />
+        </div>
+
+        <p>
+            <button class="k-button" type="submit" title="Sumbit">
+                Sumbit
+            </button>
+        </p>
+    </fieldset>
+}
+
+@section JavaScript
+{
+    <script id="fileListTemplate" type="text/x-kendo-template">
+        <li class='k-file'>
+            <span class='k-progress'></span>
+            <span class='k-icon'></span>
+            <span class='k-filename' title='#=name#'>#=name# (#=size# bytes)</span>
+            <strong class='k-upload-status'></strong>
+        </li>
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#files").kendoUpload({
+                name: "files",
+                async: { // async configuration
+                    saveUrl: "@Url.Action("Save", "Home")", // the url to save a file is '/save'
+                    removeUrl: "@Url.Action("Remove", "Home")", // the url to remove a file is '/remove'
+                    autoUpload: false, // automatically upload files once selected
+                    removeVerb: 'POST',
+                    batch: false //Maximum request length exceeded.
+                },
+                multiple: true,
+                showFileList: true,
+                //template: kendo.template($('#fileListTemplate').html()),
+                localization: {
+                    select: 'انتخاب فايل‌ها براي ارسال',
+                    remove: 'حذف فايل',
+                    retry: 'سعي مجدد',
+                    headerStatusUploading: 'در حال ارسال فايل‌ها',
+                    headerStatusUploaded: 'پايان ارسال',
+                    cancel: "لغو",
+                    uploadSelectedFiles: "ارسال فايل‌ها",
+                    dropFilesHere: "فايل‌ها را براي ارسال، كشيده و در اينجا رها كنيد",
+                    statusUploading: "در حال ارسال",
+                    statusUploaded: "ارسال شد",
+                    statusWarning: "اخطار",
+                    statusFailed: "خطا در ارسال"
+                },
+                cancel: function () {
+                    console.log('Cancel Event.');
+                },
+                complete: function () {
+                    console.log('Complete Event.');
+                },
+                error: function () {
+                    console.log('Error uploading file.');
+                },
+                progress: function (e) {
+                    console.log('Uploading file ' + e.percentComplete);
+                },
+                remove: function () {
+                    console.log('File removed.');
+                },
+                select: function () {
+                    console.log('File selected.');
+                },
+                success: function () {
+                    console.log('Upload successful.');
+                },
+                upload: function (e) {
+                    console.log('Upload started.');
+                    // Sending metadata to the save action
+                    e.data = {
+                        codeId: "1234567",
+                        param2: 12
+                        //, ...
+                    };
+                }
+            }); // Create the Kendo Upload Widget
+
+            $("#ValueDate").kendoDatePicker();
+            $("#Destination").kendoComboBox({
+                dataSource: [
+                    "loc 1",
+                    "loc 2"
+                ]
+            });
+
+            var form = $('#Form1');
+            form.data('validator').settings.ignore = ''; // default is ":hidden".
+
+            $("form").kendoValidator();
+
+            //$("#Form1").kendoValidator();
+
+            //$("#Form1").submit(function (e) {
+            //    e.preventDefault();
+            //    var validator = $("#Form1").data("kendoValidator");
+            //    if (validator.validate()) {
+            //        alert("yes!");
+            //    }
+            //});
+        });
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@model Mvc4TestViewModel.Models.OrderDetailViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Ajax.BeginForm(actionName: "Index", controllerName: "Home",
+                       ajaxOptions: new AjaxOptions(),
+                       htmlAttributes: new { id = "Form1", name = "Form1" }, routeValues: new { }
+                       ))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>OrderDetail</legend>
+
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OrderDetailId)
+            @Html.ValidationMessageFor(model => model.OrderDetailId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Origin)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Origin, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.Origin)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NetWeight)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.NetWeight, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.NetWeight)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ValueDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ValueDate)
+            @Html.ValidationMessageFor(model => model.ValueDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Destination)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Destination, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.Destination)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Username)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Username, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(model => model.Username)
+        </div>
+        <p>
+            <button class="k-button" type="submit" title="Sumbit">
+                Sumbit
+            </button>
+        </p>
+    </fieldset>
+}
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function () {
+
+            $("#ValueDate").kendoDatePicker();
+            $("#Destination").kendoComboBox({
+                dataSource: [
+                    "loc 1",
+                    "loc 2"
+                ]
+            });
+
+            var form = $('#Form1');
+            form.data('validator').settings.ignore = ''; // default is ":hidden".
+
+
+
+            $.validator.methods.remote = function () { /* disabled */ };
+            $("form").kendoValidator({
+                onfocusout: true,
+                onkeyup: true,
+                rules: {
+                    remote: function (input) {
+                        var remoteAttr = input.attr("data-val-remote-url");
+                        if (typeof remoteAttr === typeof undefined || remoteAttr === false) {
+                            return true;
+                        }
+
+                        var isInvalid = true;
+                        var data = {};
+                        data[input.attr('name')] = input.val();
+
+                        $.ajax({
+                            url: remoteAttr,
+                            mode: "abort",
+                            port: "validate" + input.attr('name'),
+                            dataType: "json",
+                            type: input.attr("data-val-remote-type"),
+                            data: data,
+                            async: false,
+                            success: function (response) {
+                                isInvalid = response;
+                            }
+                        });
+                        return !isInvalid;
+                    }
+                },
+                messages: {
+                    remote: function (input) {
+                        return input.data('val-remote');
+                    }
+                }
+            });
+
+            //$("#Form1").kendoValidator();
+
+            //$("#Form1").submit(function (e) {
+            //    e.preventDefault();
+            //    var validator = $("#Form1").data("kendoValidator");
+            //    if (validator.validate()) {
+            //        alert("yes!");
+            //    }
+            //});
+        });
+    </script>
+}

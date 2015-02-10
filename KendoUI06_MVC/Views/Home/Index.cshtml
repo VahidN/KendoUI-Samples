@@ -1,0 +1,201 @@
+﻿<!--نحوه‌ي راست به چپ سازي گريد-->
+<div class="k-rtl">
+    <div id="report-grid"></div>
+</div>
+
+<div dir="ltr" align="center">
+    <fieldset style="width: 400px">
+        <legend>روش ویرایش</legend>
+        <input type="radio" name="rdEditApproach" checked="checked" onclick="popupEdit()" />Popup
+        <input type="radio" name="rdEditApproach" onclick="inlineEdit()" />Inline
+    </fieldset>
+</div>
+
+
+@section JavaScript
+{
+    <script>
+        function popupEdit() {
+            $("#report-grid").data("kendoGrid").options.editable.mode = "popup";
+        }
+        function inlineEdit() {
+            $("#report-grid").data("kendoGrid").options.editable.mode = "inline";
+        }
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+        var productsDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "@Url.Action("GetProducts","Home")",
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'GET'
+                },
+                create: {
+                    url: "@Url.Action("PostProduct","Home")",
+                    contentType: 'application/json; charset=utf-8',
+                    type: "POST"
+                },
+                update: {
+                    url: function (product) {
+                        return "@Url.Action("UpdateProduct","Home")/" + product.Id;
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        type: "PUT"
+                    },
+                    destroy: {
+                        url: function (product) {
+                            return "@Url.Action("DeleteProduct","Home")/" + product.Id;
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        type: "DELETE"
+                    },
+                    parameterMap: function (options) {
+                        return kendo.stringify(options);
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    model: {
+                        id: "Id", // define the model of the data source. Required for validation and property types.
+                        fields: {
+                            "Id": { type: "number", editable: false }, //تعيين نوع فيلد براي جستجوي پويا مهم است
+                            "Name": { type: "string", validation: { required: true } },
+                            "IsAvailable": { type: "boolean" },
+                            "Price": { type: "number", validation: { required: true, min: 1 } },
+                            "AddDate": { type: "date", validation: { required: true } }
+                        }
+                    }
+                },
+                batch: false, // enable batch editing - changes will be saved when the user clicks the "Save changes" button
+                error: function (e) {
+                    alert(e.errorThrown);
+                },
+                pageSize: 10,
+                sort: { field: "Id", dir: "desc" },
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true,
+                group: { field: "IsAvailable" },
+                aggregate: [
+                    { field: "Name", aggregate: "count" },
+                    { field: "Price", aggregate: "sum" }
+                ]
+            });
+
+            $("#report-grid").kendoGrid({
+                dataSource: productsDataSource,
+                autoBind: true,
+                scrollable: false,
+                pageable: {
+                    previousNext: true, // default true
+                    numeric: true, // default true
+                    buttonCount: 5, // default 10
+                    refresh: true, // default false
+                    input: true, // default false
+                    //pageSizes: true, // default false
+                    pageSizes: [5, 10, 15, 20, 25], //array of page size choices for user
+                    info: true // show a label with current paging information in it
+                },
+                sortable: true,
+                filterable: true,
+                reorderable: true,
+                columnMenu: true,
+                groupable: true, // allows the user to alter what field the grid is grouped by
+                editable: {
+                    confirmation: "آيا مايل به حذف رديف انتخابي هستيد؟",
+                    destroy: true, // whether or not to delete item when button is clicked
+                    mode: "popup", // options are "incell", "inline", and "popup"
+                    //template: kendo.template($("#popupEditorTemplate").html()), // template to use for pop-up editing
+                    update: true, // switch item to edit mode when clicked?
+                    window: {
+                        title: "مشخصات محصول"   // Localization for Edit in the popup window
+                    }
+                },
+                //navigatable: true,
+                columns: [
+                    { field: "Id", title: "شماره", width: "130px" },
+                    {
+                        field: "Name", title: "نام محصول",
+                        footerTemplate: "تعداد: #=count#"
+                    },
+                    {
+                        field: "AddDate", title: "تاريخ ثبت",
+                        //format: "{0:yyyy/MM/dd}",
+                        //filterable: { ui: "datepicker" }
+                        template: "#=moment(AddDate).format('jYYYY/jMM/jDD')#"
+                    },
+                    {
+                        field: "IsAvailable", title: "موجود است",
+                        template: '<input type="checkbox" #= IsAvailable ? checked="checked" : "" # disabled="disabled" ></input>'
+                    },
+                    {
+                        field: "Price", title: "قيمت",
+                        //format: "{0:c0}",
+                        template: kendo.template($("#priceTemplate").html()),
+                        footerTemplate: "جمع: #=kendo.toString(sum,'c0')#"
+                    },
+                    {
+                        command: [
+                            { name: "edit", text: "ويرايش" },
+                            { name: "destroy", text: "حذف" }
+                        ],
+                        title: "&nbsp;", width: "160px"
+                    }
+                ],
+                toolbar: [
+                    { name: "create", text: "افزودن رديف جديد" },
+                    { name: "save", text: "ذخيره‌ي تمامي تغييرات" },
+                    { name: "cancel", text: "لغو كليه‌ي تغييرات" },
+                    { template: kendo.template($("#toolbarTemplate").html()) }
+                ],
+                messages: {
+                    editable: {
+                        cancelDelete: "لغو",
+                        confirmation: "آيا مايل به حذف اين ركورد هستيد؟",
+                        confirmDelete: "حذف"
+                    },
+                    commands: {
+                        create: "افزودن رديف جديد",
+                        cancel: "لغو كليه‌ي تغييرات",
+                        save: "ذخيره‌ي تمامي تغييرات",
+                        destroy: "حذف",
+                        edit: "ويرايش",
+                        update: "ثبت",
+                        canceledit: "لغو"
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        // اين اطلاعات براي تهيه خروجي سمت سرور مناسب هستند
+        function getCurrentGridFilters() {
+            var dataSource = $("#report-grid").data("kendoGrid").dataSource;
+            var gridState = {
+                page: dataSource.page(),
+                pageSize: dataSource.pageSize(),
+                sort: dataSource.sort(),
+                group: dataSource.group(),
+                filter: dataSource.filter()
+            };
+            return kendo.stringify(gridState);
+        }
+    </script>
+
+    <script id="toolbarTemplate" type="text/x-kendo-template">
+        <a class="k-button" href="\#" onclick="alert('gridState: ' + getCurrentGridFilters());">نوار ابزار سفارشي</a>
+    </script>
+
+    <script type="text/x-kendo-template" id="priceTemplate">
+        #if( Price > 2490 ) {#
+        <span style="background:brown; color:yellow;">#=kendo.toString(Price,'c0')#</span>
+        #} else {#
+        #= kendo.toString(Price,'c0')#
+        #}#
+    </script>
+}

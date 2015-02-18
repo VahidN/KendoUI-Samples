@@ -9,12 +9,12 @@
     <fieldset>
         <legend>تغيير نوع نمودار در زمان اجرا</legend>
         <input type="radio" name="rdShowApproach" onclick="changeChartType('bar')" />bar
-        <input type="radio" name="rdShowApproach" onclick=" changeChartType('pie')"/>pie
+        <input type="radio" name="rdShowApproach" onclick="changeChartType('pie')"/>pie
         <input type="radio" name="rdShowApproach" checked="checked" onclick=" changeChartType('column')"/>column
-        <input type="radio" name="rdShowApproach" onclick=" changeChartType('donut')"/>donut
-        <input type="radio" name="rdShowApproach" onclick=" changeChartType('line')"/>line
-        <input type="radio" name="rdShowApproach" onclick=" changeChartType('waterfall')"/>waterfall
-        <input type="radio" name="rdShowApproach" onclick=" changeChartType('funnel') "/>funnel
+        <input type="radio" name="rdShowApproach" onclick="changeChartType('donut')"/>donut
+        <input type="radio" name="rdShowApproach" onclick="changeChartType('line')"/>line
+        <input type="radio" name="rdShowApproach" onclick="changeChartType('waterfall')"/>waterfall
+        <input type="radio" name="rdShowApproach" onclick="changeChartType('funnel')"/>funnel
         <br />
         <button onclick="doExport()" class="k-button">تهيه خروجي</button>
     </fieldset>
@@ -28,7 +28,8 @@
             legendPosition: "bottom",
             seriesType: "column",
             text: "نمودار",
-            categoryAxisLabelsRotation: -45
+            categoryAxisLabelsRotation: -45,
+            font: '16px Iranian Sans'
         });
 
         function changeChartType(type) {
@@ -37,10 +38,19 @@
             chart.refresh();
         }
 
+
+        kendo.pdf.defineFont({
+            /*"Verdana": "/fonts/Verdana.ttf", // this is a URL
+            "Verdana|Bold": "/fonts/Verdana_Bold.ttf",
+            "Verdana|Bold|Italic": "/fonts/Verdana_Bold_Italic.ttf",
+            "Verdana|Italic": "/fonts/Verdana_Italic.ttf"*/
+            "Iranian Sans":"/fonts/irsans.ttf"
+        });
+
         function doExport() {
             var chart = $("#chart").data("kendoChart");
 
-            // chart.saveAsPDF(); // it needs version 2014.3.1119 +
+            chart.saveAsPDF(); // it needs version 2014.3.1119 +
             // or
             chart.exportImage().done(function (data) {
                 kendo.saveAs({

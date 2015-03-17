@@ -20,7 +20,8 @@
                         url: "api/products",
                         dataType: "json",
                         contentType: 'application/json; charset=utf-8',
-                        type: 'GET'
+                        type: 'GET',
+                        data: { param1: "val1", param2: "val2" } // ارسال اطلاعات اضافي و سفارشي به سرور در حين درخواست
                     }
                 },
                 error: function (e) {

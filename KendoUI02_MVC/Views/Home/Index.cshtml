@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="report-grid"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var productsDataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetProducts", "Home")",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'GET',
+                        data: { param1: "val1", param2: "val2" } // ارسال اطلاعات اضافي و سفارشي به سرور در حين درخواست
+                    }
+                },
+                error: function (e) {
+                    alert(e.errorThrown.stack);
+                },
+                pageSize: 5,
+                sort: { field: "Id", dir: "desc" }
+            });
+
+            $("#report-grid").kendoGrid({
+                dataSource: productsDataSource,
+                autoBind: true,
+                scrollable: false,
+                pageable: true,
+                sortable: true,
+                columns: [
+                    { field: "Id", title: "#" },
+                    { field: "Name", title: "Product" }
+                ]
+            });
+        });
+    </script>
+}

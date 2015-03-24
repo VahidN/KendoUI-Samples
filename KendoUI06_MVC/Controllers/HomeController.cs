@@ -8,6 +8,13 @@ using Newtonsoft.Json;
 
 namespace KendoUI06Mvc.Controllers
 {
+    // »« «—À »—Ì° ŒÊ«’ «÷«›Ì Ê ”›«—‘Ì —« »Â ﬂ·«” Å«ÌÂ «÷«›Â „Ìùﬂ‰Ì„
+    public class CustomDataSourceRequest : DataSourceRequest
+    {
+        public string Param1 { set; get; }
+        public string Param2 { set; get; }
+    }
+
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -30,9 +37,10 @@ namespace KendoUI06Mvc.Controllers
         [HttpGet]
         public ActionResult GetProducts()
         {
-            var request = JsonConvert.DeserializeObject<DataSourceRequest>(
-               this.Request.Url.ParseQueryString().GetKey(0)
-            );
+            var queryString = this.Request.Url.ParseQueryString().GetKey(0);
+            //«ÿ·«⁄«  —”ÌœÂ »« ›—„  ÃÌù”Ê‰ œ— œ«Œ· ﬂÊ∆—Ì «” —Ì‰ê ﬁ—«— ê—› Âù«” 
+            //{"param1":"val1","param2":"val2","take":10,"skip":0,"page":1,"pageSize":10,"sort":[{"field":"Id","dir":"desc"}]}
+            var request = JsonConvert.DeserializeObject<CustomDataSourceRequest>(queryString);
 
             var list = ProductDataSource.LatestProducts;
             return Json(list.AsQueryable()

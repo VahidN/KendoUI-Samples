@@ -1,4 +1,4 @@
-using System.Linq;
+ï»¿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace KendoUI06Mvc.Controllers
 {
-    // ÈÇ ÇÑË ÈÑí¡ ÎæÇÕ ÇÖÇİí æ ÓİÇÑÔí ÑÇ Èå ßáÇÓ Çíå ÇÖÇİå ãíßäíã
+    // Ø¨Ø§ Ø§Ø±Ø« Ø¨Ø±ÙŠØŒ Ø®ÙˆØ§Øµ Ø§Ø¶Ø§ÙÙŠ Ùˆ Ø³ÙØ§Ø±Ø´ÙŠ Ø±Ø§ Ø¨Ù‡ ÙƒÙ„Ø§Ø³ Ù¾Ø§ÙŠÙ‡ Ø§Ø¶Ø§ÙÙ‡ Ù…ÙŠâ€ŒÙƒÙ†ÙŠÙ…
     public class CustomDataSourceRequest : DataSourceRequest
     {
         public string Param1 { set; get; }
@@ -38,7 +38,7 @@ namespace KendoUI06Mvc.Controllers
         public ActionResult GetProducts()
         {
             var queryString = this.Request.Url.ParseQueryString().GetKey(0);
-            //ÇØáÇÚÇÊ ÑÓíÏå ÈÇ İÑãÊ ÌíÓæä ÏÑ ÏÇÎá ßæÆÑí ÇÓÊÑíä ŞÑÇÑ ÑİÊåÇÓÊ
+            //Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø±Ø³ÙŠØ¯Ù‡ Ø¨Ø§ ÙØ±Ù…Øª Ø¬ÙŠâ€ŒØ³ÙˆÙ† Ø¯Ø± Ø¯Ø§Ø®Ù„ ÙƒÙˆØ¦Ø±ÙŠ Ø§Ø³ØªØ±ÙŠÙ†Ú¯ Ù‚Ø±Ø§Ø± Ú¯Ø±ÙØªÙ‡â€ŒØ§Ø³Øª
             //{"param1":"val1","param2":"val2","take":10,"skip":0,"page":1,"pageSize":10,"sort":[{"field":"Id","dir":"desc"}]}
             var request = JsonConvert.DeserializeObject<CustomDataSourceRequest>(queryString);
 
@@ -63,7 +63,7 @@ namespace KendoUI06Mvc.Controllers
             product.Id = id;
             ProductDataSource.LatestProducts.Add(product);
 
-            // ÑíÏ Âí Ïí ÌÏíÏ ÑÇ Èå Çíä ÕæÑÊ ÏÑíÇİÊ ãíßäÏ
+            // Ú¯Ø±ÙŠØ¯ Ø¢ÙŠ Ø¯ÙŠ Ø¬Ø¯ÙŠØ¯ Ø±Ø§ Ø¨Ù‡ Ø§ÙŠÙ† ØµÙˆØ±Øª Ø¯Ø±ÙŠØ§ÙØª Ù…ÙŠâ€ŒÙƒÙ†Ø¯
             return Json(new DataSourceResult { Data = new[] { product } });
         }
 

@@ -1,0 +1,55 @@
+﻿<!--نحوه‌ي راست به چپ سازي -->
+<div class="k-rtl k-header demo-section">
+    <div id="my-treeview"></div>
+</div>
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function () {
+            var dataSource = new kendo.data.HierarchicalDataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetBlogComments", "Home")",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'GET'
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "Id",
+                        hasChildren: "HasChildren"
+                    }
+                }
+            });
+
+            $("#my-treeview").kendoTreeView({
+                //استفاده از قالب در صورت نياز
+                template: kendo.template($("#treeview-template").html()),
+                checkboxes: {
+                    checkChildren: false
+                },
+                dataSource: dataSource,
+                dataTextField: "Body",
+                //رخدادها
+                select: function (e) { console.log("Selecting: " + this.text(e.node)); },
+                check: function (e) { console.log("Checkbox changed :: " + this.text(e.node)); },
+                change: function (e) { console.log("Selection changed"); },
+                collapse: function (e) { console.log("Collapsing " + this.text(e.node)); },
+                expand: function (e) { console.log("Expanding " + this.text(e.node)); }
+            });
+        });
+    </script>
+
+    <script id="treeview-template" type="text/kendo-ui-template">
+        <strong> #: item.Body # </strong>
+    </script>
+
+    <style scoped>
+        .demo-section {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+}

@@ -1,0 +1,58 @@
+﻿<!--نحوه‌ي راست به چپ سازي -->
+<div class="k-rtl k-header demo-section">
+    <label for="categories">گروه‌ها: </label><input id="categories" style="width: 270px" />
+    <label for="products">محصولات: </label><input id="products" disabled="disabled" style="width: 270px" />
+</div>
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#categories").kendoDropDownList({
+                optionLabel: "انتخاب گروه...",
+                dataTextField: "CategoryName",
+                dataValueField: "CategoryId",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "@Url.Action("GetCategories", "Home")",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            type: 'GET'
+                        }
+                    }
+                }
+            });
+
+            $("#products").kendoDropDownList({
+                autoBind: false, // won’t try and read from the DataSource when it first loads
+                cascadeFrom: "categories", // the id of the DropDown you want to cascade from
+                optionLabel: "انتخاب محصول...",
+                dataTextField: "ProductName",
+                dataValueField: "ProductId",
+                dataSource: {
+                    // When the serverFiltering is disabled, then the combobox will not make any additional requests to the server.
+                    serverFiltering: true, // the DataSource will send filter values to the server
+                    transport: {
+                        read: {
+                            url: "@Url.Action("GetProducts", "Home")",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            type: 'GET',
+                            data: function () {
+                                return { categoryId: $("#categories").val() };
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <style scoped>
+        .demo-section {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+}

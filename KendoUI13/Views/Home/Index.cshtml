@@ -1,0 +1,73 @@
+﻿<!--نحوه‌ي راست به چپ سازي -->
+<div class="k-rtl">
+    <textarea id="editor" rows="10" cols="30" style="height: 440px"></textarea>
+</div>
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#editor").kendoEditor({
+                tools: [
+                    "bold", "italic", "underline", "strikethrough", "justifyLeft",
+                    "justifyCenter", "justifyRight", "justifyFull", "insertUnorderedList",
+                    "insertOrderedList", "indent", "outdent", "createLink", "unlink",
+                    "insertImage", "insertFile",
+                    "subscript", "superscript", "createTable", "addRowAbove", "addRowBelow",
+                    "addColumnLeft", "addColumnRight", "deleteRow", "deleteColumn", "viewHtml",
+                    "formatting", "cleanFormatting", "fontName", "fontSize", "foreColor",
+                    "backColor", "print"
+                ],
+                imageBrowser: {
+                    messages: {
+                        dropFilesHere: "فايل‌هاي خود را به اينجا كشيده و رها كنيد"
+                    },
+                    transport: {
+                        read: {
+                            url: "@Url.Action("GetFilesList", "KendoEditorImages")",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            type: 'GET',
+                            cache: false
+                        },
+                        destroy: {
+                            url: "@Url.Action("DestroyFile", "KendoEditorImages")",
+                            type: "POST"
+                        },
+                        create: {
+                            url: "@Url.Action("CreateFolder", "KendoEditorImages")",
+                            type: "POST"
+                        },
+                        thumbnailUrl: "@Url.Action("GetThumbnail", "KendoEditorImages")",
+                        uploadUrl: "@Url.Action("UploadFile", "KendoEditorImages")",
+                        imageUrl: "@Url.Action("GetFile", "KendoEditorImages")?path={0}"
+                    }
+                },
+                fileBrowser: {
+                    messages: {
+                        dropFilesHere: "فايل‌هاي خود را به اينجا كشيده و رها كنيد"
+                    },
+                    transport: {
+                        read: {
+                            url: "@Url.Action("GetFilesList", "KendoEditorFiles")",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            type: 'GET',
+                            cache: false
+                        },
+                        destroy: {
+                            url: "@Url.Action("DestroyFile", "KendoEditorFiles")",
+                            type: "POST"
+                        },
+                        create: {
+                            url: "@Url.Action("CreateFolder", "KendoEditorFiles")",
+                            type: "POST"
+                        },
+                        uploadUrl: "@Url.Action("UploadFile", "KendoEditorFiles")",
+                        fileUrl: "@Url.Action("GetFile", "KendoEditorFiles")?path={0}"
+                    }
+                }
+            });
+        });
+    </script>
+}

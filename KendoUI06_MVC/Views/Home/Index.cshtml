@@ -84,7 +84,13 @@
                 aggregate: [
                     { field: "Name", aggregate: "count" },
                     { field: "Price", aggregate: "sum" }
-                ]
+                ],
+                requestStart: function () {
+                    kendo.ui.progress($("#report-grid"), true);
+                },
+                requestEnd: function () {
+                    kendo.ui.progress($("#report-grid"), false);
+                }
             });
 
             $("#report-grid").kendoGrid({

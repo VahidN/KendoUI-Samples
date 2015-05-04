@@ -82,11 +82,12 @@ div.k-dropzone em {
     </script>
 
     <script type="text/javascript">
-        $(function () {
+        $(function() {
 
             $("#files").kendoUpload({
                 name: "files",
-                async: { // async configuration
+                async: {
+// async configuration
                     saveUrl: "@Url.Action("Save", "Home")", // the url to save a file is '/save'
                     removeUrl: "@Url.Action("Remove", "Home")", // the url to remove a file is '/remove'
                     autoUpload: false, // automatically upload files once selected
@@ -110,28 +111,32 @@ div.k-dropzone em {
                     statusWarning: "اخطار",
                     statusFailed: "خطا در ارسال"
                 },
-                cancel: function () {
+                cancel: function() {
                     console.log('Cancel Event.');
                 },
-                complete: function () {
+                complete: function() {
                     console.log('Complete Event.');
                 },
-                error: function () {
+                error: function() {
                     console.log('Error uploading file.');
                 },
-                progress: function (e) {
+                progress: function(e) {
                     console.log('Uploading file ' + e.percentComplete);
                 },
-                remove: function () {
-                    console.log('File removed.');
+                remove: function(e) {
+                    if (!confirm("Are you sure you want to remove the item?")) {
+                        e.preventDefault();
+                    } else {
+                        console.log('File removed.');
+                    }
                 },
-                select: function () {
+                select: function() {
                     console.log('File selected.');
                 },
-                success: function () {
+                success: function() {
                     console.log('Upload successful.');
                 },
-                upload: function (e) {
+                upload: function(e) {
                     console.log('Upload started.');
                     // Sending metadata to the save action
                     e.data = {
@@ -151,7 +156,7 @@ div.k-dropzone em {
             });
 
             var form = $('#Form1');
-            form.data('validator').settings.ignore = ''; // default is ":hidden".
+            form.data('validator').settings.ignore = ''; // default is ":hidden".
 
             $("form").kendoValidator();
 

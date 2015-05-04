@@ -37,6 +37,8 @@ namespace KendoUI06Mvc.Controllers
         [HttpGet]
         public ActionResult GetProducts()
         {
+            System.Threading.Thread.Sleep(3000); //شبيه سازي يك عمليات طولاني براي نمايش منتظر بمانيد
+
             var queryString = this.Request.Url.ParseQueryString().GetKey(0);
             //اطلاعات رسيده با فرمت جي‌سون در داخل كوئري استرينگ قرار گرفته‌است
             //{"param1":"val1","param2":"val2","take":10,"skip":0,"page":1,"pageSize":10,"sort":[{"field":"Id","dir":"desc"}]}

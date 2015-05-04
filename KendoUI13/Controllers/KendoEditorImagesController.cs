@@ -6,7 +6,7 @@ namespace KendoUI13.Controllers
     {
         public KendoEditorImagesController()
         {
-            // بازنويسي مسير پوشه‌ي فايل‌ها
+            // بازنویسی مسیر پوشه‌ی فایل‌ها
             FilesFolder = "~/images";
         }
 

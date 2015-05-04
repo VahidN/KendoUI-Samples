@@ -27,25 +27,25 @@ namespace KendoUI11.Models
 
             var comment1 = new BlogComment
             {
-                Id = 1, Body = "نظر من اين است که", HasChildren = true, ParentId = null
+                Id = 1, Body = "نظر من این است که", HasChildren = true, ParentId = null
             };
             list.Add(comment1);
 
             var comment12 = new BlogComment
             {
-                Id = 2, Body = "پاسخي به نظر اول", HasChildren = true, ParentId = 1
+                Id = 2, Body = "پاسخی به نظر اول", HasChildren = true, ParentId = 1
             };
             list.Add(comment12);
 
             var comment12A = new BlogComment
             {
-                Id = 3, Body = "پاسخي ديگري به نظر اول", HasChildren = false, ParentId = 1
+                Id = 3, Body = "پاسخی دیگری به نظر اول", HasChildren = false, ParentId = 1
             };
             list.Add(comment12A);
 
             var comment121 = new BlogComment
             {
-                Id = 4, Body = "پاسخي به پاسخ به نظر اول", HasChildren = false, ParentId = 2
+                Id = 4, Body = "پاسخی به پاسخ به نظر اول", HasChildren = false, ParentId = 2
             };
             list.Add(comment121);
 

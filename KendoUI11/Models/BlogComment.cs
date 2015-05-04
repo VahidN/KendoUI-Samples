@@ -8,7 +8,7 @@
 
         public int? ParentId { get; set; }
 
-        // مخصوص كندو يو آي هستند
+        // مخصوص کندو یو آی هستند
         public bool HasChildren { get; set; }
         public string imageUrl { get; set; }
     }

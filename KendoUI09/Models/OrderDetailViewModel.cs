@@ -6,7 +6,7 @@ namespace Mvc4TestViewModel.Models
 {
     public class OrderDetailViewModel
     {
-        [Required(ErrorMessage = "لطفا فيلد منبع را وارد كنيد")]
+        [Required(ErrorMessage = "لطفا فیلد منبع را وارد کنید")]
         public string Origin { get; set; }
 
         [DisplayName("Net Wt")]

@@ -11,7 +11,7 @@ namespace KendoUI13.Controllers
 {
     public class KendoEditorFilesController : Controller
     {
-        //مسير پوشه فايل‌ها
+        //مسیر پوشه فایل‌ها
         protected string FilesFolder = "~/files";
 
         protected string KendoFileType = "f";
@@ -20,7 +20,7 @@ namespace KendoUI13.Controllers
         [HttpPost]
         public ActionResult CreateFolder(string name, string path)
         {
-            //تميز سازي امنيتي
+            //تمیز سازی امنیتی
             name = Path.GetFileName(name);
             path = GetSafeDirPath(path);
             var dirToCreate = Path.Combine(path, name);
@@ -37,7 +37,7 @@ namespace KendoUI13.Controllers
         [HttpPost]
         public ActionResult DestroyFile(string name, string path)
         {
-            //تميز سازي امنيتي
+            //تمیز سازی امنیتی
             name = Path.GetFileName(name);
             path = GetSafeDirPath(path);
 
@@ -98,7 +98,7 @@ namespace KendoUI13.Controllers
         [HttpPost]
         public ActionResult UploadFile(HttpPostedFileBase file, string path)
         {
-            //تميز سازي امنيتي
+            //تمیز سازی امنیتی
             var name = Path.GetFileName(file.FileName);
             path = GetSafeDirPath(path);
             var pathToSave = Path.Combine(path, name);
@@ -115,13 +115,13 @@ namespace KendoUI13.Controllers
 
         protected string GetSafeDirPath(string path)
         {
-            // path = مسير زير پوشه‌ي وارد شده
+            // path = مسیر زیر پوشه‌ی وارد شده
             if (string.IsNullOrWhiteSpace(path))
             {
                 return Server.MapPath(FilesFolder);
             }
 
-            //تميز سازي امنيتي
+            //تمیز سازی امنیتی
             path = Path.GetDirectoryName(path);
             path = Path.Combine(Server.MapPath(FilesFolder), path);
             return path;
@@ -129,9 +129,9 @@ namespace KendoUI13.Controllers
 
         protected string GetSafeFileAndDirPath(string path)
         {
-            // path = مسير فايل و زير پوشه‌ي وارد شده
+            // path = مسیر فایل و زیر پوشه‌ی وارد شده
 
-            //تميز سازي امنيتي
+            //تمیز سازی امنیتی
             var name = Path.GetFileName(path);
             var dir = string.Empty;
             if (!string.IsNullOrWhiteSpace(path))

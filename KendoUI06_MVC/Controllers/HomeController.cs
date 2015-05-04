@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace KendoUI06Mvc.Controllers
 {
-    // با ارث بري، خواص اضافي و سفارشي را به كلاس پايه اضافه مي‌كنيم
+    // با ارث بری، خواص اضافی و سفارشی را به کلاس پایه اضافه می‌کنیم
     public class CustomDataSourceRequest : DataSourceRequest
     {
         public string Param1 { set; get; }
@@ -37,10 +37,10 @@ namespace KendoUI06Mvc.Controllers
         [HttpGet]
         public ActionResult GetProducts()
         {
-            System.Threading.Thread.Sleep(3000); //شبيه سازي يك عمليات طولاني براي نمايش منتظر بمانيد
+            System.Threading.Thread.Sleep(3000); //شبیه سازی یک عملیات طولانی برای نمایش منتظر بمانید
 
             var queryString = this.Request.Url.ParseQueryString().GetKey(0);
-            //اطلاعات رسيده با فرمت جي‌سون در داخل كوئري استرينگ قرار گرفته‌است
+            //اطلاعات رسیده با فرمت جی‌سون در داخل کوئری استرینگ قرار گرفته‌است
             //{"param1":"val1","param2":"val2","take":10,"skip":0,"page":1,"pageSize":10,"sort":[{"field":"Id","dir":"desc"}]}
             var request = JsonConvert.DeserializeObject<CustomDataSourceRequest>(queryString);
 
@@ -65,7 +65,7 @@ namespace KendoUI06Mvc.Controllers
             product.Id = id;
             ProductDataSource.LatestProducts.Add(product);
 
-            // گريد آي دي جديد را به اين صورت دريافت مي‌كند
+            // گرید آی دی جدید را به این صورت دریافت می‌کند
             return Json(new DataSourceResult { Data = new[] { product } });
         }
 

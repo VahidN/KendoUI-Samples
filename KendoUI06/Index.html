@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -9,13 +8,13 @@
     <title>Kendo UI: Implemeting the grif</title>
 
     <link href="styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
-    <!--شيوه نامه‌ي مخصوص راست به چپ سازي-->
+    <!--شیوه نامه‌ی مخصوص راست به چپ سازی-->
     <link href="styles/kendo.rtl.min.css" rel="stylesheet" />
     <link href="styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/kendo.all.min.js" type="text/javascript"></script>
 
-    <!--محل سفارشي سازي پيام‌ها و مسايل بومي-->
+    <!--محل سفارشی سازی پیام‌ها و مسایل بومی-->
     <script src="js/cultures/kendo.culture.fa-IR.js" type="text/javascript"></script>
     <script src="js/cultures/kendo.culture.fa.js" type="text/javascript"></script>
     <script src="js/messages/kendo.messages.en-US.js" type="text/javascript"></script>
@@ -37,12 +36,12 @@
     </style>
 
     <script type="text/javascript">
-        // جهت استفاده از فايل: kendo.culture.fa-IR.js
+        // جهت استفاده از فایل: kendo.culture.fa-IR.js
         kendo.culture("fa-IR");
     </script>
 </head>
 <body>
-    <!--نحوه‌ي راست به چپ سازي گريد-->
+    <!--نحوه‌ی راست به چپ سازی گرید-->
     <div class="k-rtl">
         <div id="report-grid"></div>
     </div>
@@ -104,7 +103,7 @@
                     model: {
                         id: "Id", // define the model of the data source. Required for validation and property types.
                         fields: {
-                            "Id": { type: "number", editable: false }, //تعيين نوع فيلد براي جستجوي پويا مهم است
+                            "Id": { type: "number", editable: false }, //تعیین نوع فیلد برای جستجوی پویا مهم است
                             "Name": { type: "string", validation: { required: true } },
                             "IsAvailable": { type: "boolean" },
                             "Price": { type: "number", validation: { required: true, min: 1 } },
@@ -148,7 +147,7 @@
                 columnMenu: true,
                 groupable: true, // allows the user to alter what field the grid is grouped by
                 editable: {
-                    confirmation: "آيا مايل به حذف رديف انتخابي هستيد؟",
+                    confirmation: "آیا مایل به حذف ردیف انتخابی هستید؟",
                     destroy: true, // whether or not to delete item when button is clicked
                     mode: "popup", // options are "incell", "inline", and "popup"
                     //template: kendo.template($("#popupEditorTemplate").html()), // template to use for pop-up editing
@@ -165,7 +164,7 @@
                         footerTemplate: "تعداد: #=count#"
                     },
                     {
-                        field: "AddDate", title: "تاريخ ثبت",
+                        field: "AddDate", title: "تاریخ ثبت",
                         //format: "{0:yyyy/MM/dd}",
                         //filterable: { ui: "datepicker" }
                         template: "#=moment(AddDate).format('jYYYY/jMM/jDD')#"
@@ -175,37 +174,37 @@
                         template: '<input type="checkbox" #= IsAvailable ? checked="checked" : "" # disabled="disabled" ></input>'
                     },
                     {
-                        field: "Price", title: "قيمت",
+                        field: "Price", title: "قیمت",
                         //format: "{0:c0}",
                         template: kendo.template($("#priceTemplate").html()),
                         footerTemplate: "جمع: #=kendo.toString(sum,'c0')#"
                     },
                     {
                         command: [
-                            { name: "edit", text: "ويرايش" },
+                            { name: "edit", text: "ویرایش" },
                             { name: "destroy", text: "حذف" }
                         ],
                         title: "&nbsp;", width: "160px"
                     }
                 ],
                 toolbar: [
-                    { name: "create", text: "افزودن رديف جديد" },
-                    { name: "save", text: "ذخيره‌ي تمامي تغييرات" },
-                    { name: "cancel", text: "لغو كليه‌ي تغييرات" },
+                    { name: "create", text: "افزودن ردیف جدید" },
+                    { name: "save", text: "ذخیره‌ی تمامی تغییرات" },
+                    { name: "cancel", text: "لغو کلیه‌ی تغییرات" },
                     { template: kendo.template($("#toolbarTemplate").html()) }
                 ],
                 messages: {
                     editable: {
                         cancelDelete: "لغو",
-                        confirmation: "آيا مايل به حذف اين ركورد هستيد؟",
+                        confirmation: "آیا مایل به حذف این رکورد هستید؟",
                         confirmDelete: "حذف"
                     },
                     commands: {
-                        create: "افزودن رديف جديد",
-                        cancel: "لغو كليه‌ي تغييرات",
-                        save: "ذخيره‌ي تمامي تغييرات",
+                        create: "افزودن ردیف جدید",
+                        cancel: "لغو کلیه‌ی تغییرات",
+                        save: "ذخیره‌ی تمامی تغییرات",
                         destroy: "حذف",
-                        edit: "ويرايش",
+                        edit: "ویرایش",
                         update: "ثبت",
                         canceledit: "لغو"
                     }
@@ -215,7 +214,7 @@
     </script>
 
     <script type="text/javascript">
-        // اين اطلاعات براي تهيه خروجي سمت سرور مناسب هستند
+        // این اطلاعات برای تهیه خروجی سمت سرور مناسب هستند
         function getCurrentGridFilters() {
             var dataSource = $("#report-grid").data("kendoGrid").dataSource;
             var gridState = {
@@ -230,7 +229,7 @@
     </script>
 
     <script id="toolbarTemplate" type="text/x-kendo-template">
-        <a class="k-button" href="\#" onclick="alert('gridState: ' + getCurrentGridFilters());">نوار ابزار سفارشي</a>
+        <a class="k-button" href="\#" onclick="alert('gridState: ' + getCurrentGridFilters());">نوار ابزار سفارشی</a>
     </script>
 
     <script type="text/x-kendo-template" id="priceTemplate">

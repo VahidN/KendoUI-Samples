@@ -1,4 +1,4 @@
-using System.Web.Mvc;
+ï»¿using System.Web.Mvc;
 using Mvc4TestViewModel.Models;
 
 namespace Mvc4TestViewModel.Controllers
@@ -14,7 +14,7 @@ namespace Mvc4TestViewModel.Controllers
         [HttpPost]
         public ActionResult Index(OrderDetailViewModel model)
         {
-            this.ModelState.AddModelError("test", "ÎØÇí ÂÒãÇíÔí ÓãÊ ÓÑæÑ");
+            this.ModelState.AddModelError("test", "Ø®Ø·Ø§ÛŒ Ø¢Ø²Ù…Ø§ÛŒØ´ÛŒ Ø³Ù…Øª Ø³Ø±ÙˆØ±");
             return View();
         }
 

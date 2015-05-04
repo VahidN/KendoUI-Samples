@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -9,13 +8,13 @@
     <title>Kendo UI: Implemeting MVVM</title>
 
     <link href="styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
-    <!--شيوه نامه‌ي مخصوص راست به چپ سازي-->
+    <!--شیوه نامه‌ی مخصوص راست به چپ سازی-->
     <link href="styles/kendo.rtl.min.css" rel="stylesheet" />
     <link href="styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/kendo.all.min.js" type="text/javascript"></script>
 
-    <!--محل سفارشي سازي پيام‌ها و مسايل بومي-->
+    <!--محل سفارشی سازی پیام‌ها و مسایل بومی-->
     <script src="js/cultures/kendo.culture.fa-IR.js" type="text/javascript"></script>
     <script src="js/cultures/kendo.culture.fa.js" type="text/javascript"></script>
     <script src="js/messages/kendo.messages.en-US.js" type="text/javascript"></script>
@@ -31,7 +30,7 @@
     <link rel="stylesheet" href="styles/site.css" />
 
     <script type="text/javascript">
-        // جهت استفاده از فايل: kendo.culture.fa-IR.js
+        // جهت استفاده از فایل: kendo.culture.fa-IR.js
         kendo.culture("fa-IR");
     </script>
 </head>
@@ -59,15 +58,15 @@
                         <span class="k-invalid-msg" data-for="CourseName"></span>
                     </li>
                     <li>
-                        <label for="Credit">مبلغ پرداختي</label>
+                        <label for="Credit">مبلغ پرداختی</label>
                         <input id="Credit" name="Credit" type="number" min="1000" max="6000"
-                               required data-max-msg="عددي بين 1000 و 6000" dir="ltr"
+                               required data-max-msg="عددی بین 1000 و 6000" dir="ltr"
                                data-bind="value:course.Credit"
                                class="k-textbox k-input" />
                         <span class="k-invalid-msg" data-for="Credit"></span>
                     </li>
                     <li>
-                        <label for="Email">پست الكترونيك</label>
+                        <label for="Email">پست الکترونیک</label>
                         <input type="email" id="Email" dir="ltr" name="Email"
                                data-bind="value:course.Email"
                                required class="k-textbox" />
@@ -83,7 +82,7 @@
                         <input type="checkbox" name="Accept"
                                data-bind="checked:accepted"
                                required />
-                        شرايط دوره را قبول دارم.
+                        شرایط دوره را قبول دارم.
                         <span class="k-invalid-msg" data-for="Accept"></span>
                     </li>
                     <li>
@@ -105,8 +104,8 @@
                         <th>Id</th>
                         <th>نام</th>
                         <th>دوره</th>
-                        <th>هزينه</th>
-                        <th>ايميل</th>
+                        <th>هزینه</th>
+                        <th>ایمیل</th>
                         <th>تلفن</th>
                         <th></th>
                         <th></th>
@@ -126,14 +125,14 @@
                     <td data-bind="text: Email"></td>
                     <td data-bind="text: Tel"></td>
                     <td><button class="k-button" data-bind="click: deleteCourse">حذف</button></td>
-                    <td><button class="k-button" data-bind="click: editCourse">ويرايش</button></td>
+                    <td><button class="k-button" data-bind="click: editCourse">ویرایش</button></td>
                 </tr>
             </script>
             <script id="footer-template" type="text/x-kendo-template">
                 <tr>
                     <td colspan="3"></td>
                     <td>
-                        جمع كل: #: kendo.toString(totalPrice(), "c0") #
+                        جمع کل: #: kendo.toString(totalPrice(), "c0") #
                     </td>
                     <td colspan="2"></td>
                     <td></td>
@@ -166,15 +165,15 @@
                         if (!input.is("[id=UserName]"))
                             return true;
 
-                        var re = /^[A-Za-z-ا-ي]+$/;
+                        var re = /^[A-Za-z-ا-ی]+$/;
                         return re.test(input.val());
                     }
                 },
                 messages: {
                     // {0} would be replaced with the input element's name
-                    required: '{0} را تكميل كنيد.',
-                    email: 'ايميل وارد شده معتبر نيست.',
-                    customRule1: 'اعداد مجاز نيستند.'
+                    required: '{0} را تکمیل کنید.',
+                    email: 'ایمیل وارد شده معتبر نیست.',
+                    customRule1: 'اعداد مجاز نیستند.'
                 }
             });
 
@@ -230,7 +229,7 @@
                     alert(e.errorThrown);
                 },
                 change: function (e) {
-                    // فراخواني در زمان دريافت اطلاعات از سرور و يا تغييرات محلي
+                    // فراخوانی در زمان دریافت اطلاعات از سرور و یا تغییرات محلی
                     viewModel.set("coursesDataSourceRows", new kendo.data.ObservableArray(this.view()));
                 }
             });
@@ -276,7 +275,7 @@
             });
 
             kendo.bind($("#coursesSection"), viewModel);
-            dataSource.read(); // دريافت ليست موجود از سرور در آغاز كار
+            dataSource.read(); // دریافت لیست موجود از سرور در آغاز کار
         });
     </script>
 </body>

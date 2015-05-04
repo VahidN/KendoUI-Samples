@@ -10,7 +10,7 @@ namespace Mvc4TestViewModel.Models
         [HiddenInput(DisplayValue = false)]
         public int OrderDetailId { get; set; }
 
-        [Required(ErrorMessage = "لطفا فيلد منبع را وارد كنيد")]
+        [Required(ErrorMessage = "لطفا فیلد منبع را وارد کنید")]
         public string Origin { get; set; }
 
         [DisplayName("Net Wt")]

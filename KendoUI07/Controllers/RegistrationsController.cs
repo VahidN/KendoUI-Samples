@@ -40,7 +40,7 @@ namespace KendoUI07.Controllers
             registration.Id = id;
             RegistrationsDataSource.LatestRegistrations.Add(registration);
 
-            // ارسال آي دي مهم است تا از ارسال ركوردهاي تكراري جلوگيري شود
+            // ارسال آی دی مهم است تا از ارسال رکوردهای تکراری جلوگیری شود
             return Request.CreateResponse(HttpStatusCode.Created, registration);
         }
 

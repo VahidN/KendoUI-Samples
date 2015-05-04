@@ -266,7 +266,7 @@ $.extend(true, kendo.ui.NumericTextBox.prototype.options,{
 if (kendo.ui.Pager) {
 kendo.ui.Pager.prototype.options.messages =
 $.extend(true, kendo.ui.Pager.prototype.options.messages,{
-  "display": "{0} - {1} از {2} رديف",
+  "display": "{0} - {1} از {2} ردیف",
   "empty": "No items to display",
   "page": "Page",
   "of": "of {0}",

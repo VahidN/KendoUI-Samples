@@ -50,7 +50,7 @@ namespace KendoUI06.Controllers
 
             var response = Request.CreateResponse(HttpStatusCode.Created, product);
             response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = product.Id }));
-            // گريد آي دي جديد را به اين صورت دريافت مي‌كند
+            // گرید آی دی جدید را به این صورت دریافت می‌کند
             response.Content = new ObjectContent<DataSourceResult>(
                 new DataSourceResult { Data = new[] { product } }, new JsonMediaTypeFormatter());
             return response;

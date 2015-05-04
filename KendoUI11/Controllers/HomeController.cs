@@ -17,16 +17,16 @@ namespace KendoUI11.Controllers
         {
             if (id == null)
             {
-                //دريافت ريشه‌ها
+                //دریافت ریشه‌ها
                 return Json(
                     BlogCommentsDataSource.LatestComments
-                        .Where(x => x.ParentId == null) // ريشه‌ها
+                        .Where(x => x.ParentId == null) // ریشه‌ها
                         .ToList(),
                     JsonRequestBehavior.AllowGet);
             }
             else
             {
-                //دريافت فرزندهاي يك ريشه
+                //دریافت فرزندهای یک ریشه
                 return Json(
                     BlogCommentsDataSource.LatestComments
                               .Where(x => x.ParentId == id)
